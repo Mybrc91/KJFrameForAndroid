@@ -157,7 +157,7 @@ public class HttpActivity extends KJActivity {
         // params.putHeaders("cookie", "cookie不能告诉你");
         // kjh.post("http://www.oschina.net/action/api/tweet_pub", params,
         params.put("username", "kymjs123@gmail.com");
-        params.put("pwd", "ZT2995212680");
+        params.put("pwd", "123456");
         kjh.post("http://www.oschina.net/action/api/login_validate", params,
                 new HttpCallBack() {
                     @Override
@@ -238,6 +238,12 @@ public class HttpActivity extends KJActivity {
                     public void onSuccess(byte[] t) {
                         super.onSuccess(t);
                         toast("完成");
+                    }
+
+                    @Override
+                    public void onFailure(int errorNo, String strMsg) {
+                        super.onFailure(errorNo, strMsg);
+                        KJLoger.debug(errorNo + "====" + strMsg);
                     }
                 });
     }

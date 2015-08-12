@@ -37,8 +37,7 @@ public class ImageDisplayer {
     private final KJHttp mKJHttp; // 使用KJHttp的线程池执行队列去加载图片
 
     private final ImageCache mMemoryCache; // 内存缓存器
-    // 为了防止网速很快的时候速度过快而造成先显示加载中图片，然后瞬间显示网络图片的闪烁问题
-    private final int mResponseDelayMs = 100;
+    private final long mResponseDelayMs;
 
     private Runnable mRunnable;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
@@ -64,6 +63,7 @@ public class ImageDisplayer {
         config.cacheTime = bitmapConfig.cacheTime;
         mKJHttp = new KJHttp(config);
         mMemoryCache = BitmapConfig.mMemoryCache;
+        mResponseDelayMs = bitmapConfig.delayTime;
     }
 
     /**
@@ -115,6 +115,7 @@ public class ImageDisplayer {
 
         Request<Bitmap> newRequest = makeImageRequest(requestUrl, maxWidth,
                 maxHeight);
+        newRequest.setShouldCache(false);
         newRequest.setConfig(mKJHttp.getConfig());
         mKJHttp.doRequest(newRequest);
         mRequestsMap.put(requestUrl,
@@ -316,8 +317,18 @@ public class ImageDisplayer {
      * 
      * @param url
      */
-    public void cancle(String url) {
+    public void cancel(String url) {
         mKJHttp.cancel(url);
+    }
+
+    /**
+     * 取消一个加载请求(拼写错误，请使用cancel(url))
+     * 
+     * @param url
+     */
+    @Deprecated
+    public void cancle(String url) {
+        this.cancel(url);
     }
 
     /**

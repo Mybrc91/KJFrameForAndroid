@@ -168,9 +168,7 @@ public abstract class Request<T> implements Comparable<Request<T>> {
         return mUrl;
     }
 
-    public String getCacheKey() {
-        return getUrl();
-    }
+    public abstract String getCacheKey();
 
     public Request<?> setCacheEntry(Cache.Entry entry) {
         mCacheEntry = entry;
@@ -248,7 +246,7 @@ public abstract class Request<T> implements Comparable<Request<T>> {
         return this;
     }
 
-    public final boolean shouldCache() {
+    public boolean shouldCache() {
         return mShouldCache;
     }
 
